@@ -13,6 +13,35 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// 1. Halaman Home, menampilkan halaman awal website
+Route::get('/', function (){
+    return view ('home');
 });
+
+// // 2. Halaman Products menampilkan daftar product ( route prefix)
+Route::prefix('category')->group(function () {
+    Route::get('/list',function() {
+        return view ('product');
+    });
+});
+
+// 3. Halaman News menampilkan Daftar berita (route param)
+Route::get('/news', [ArticleController::class, 'news']);
+Route::get('/news/{string}', [ArticleController::class, 'newsString']);
+
+// 4. Halaman Program menampilkan Daftar Program (route prefix)
+Route::prefix('/program')->group(function () {
+    Route::get('/{string}', function ($string) {
+        return view('program', ['url' => $string]);
+    });
+});
+
+// 5. Halaman About Us menampilkan About Us (route biasa)
+Route::get('/about-us', [AboutController::class, 'about']);
+
+// 6. Halaman Contact Us menampilkan Contact Us (route resource only)
+Route::get('/contact-us', [ContactController::class, 'index']);
